@@ -71,22 +71,23 @@
                     <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden w-full">
                         
                         <!-- Bagian Atas: Semuanya Terkunci di Tengah -->
-                        <div class="pt-8 pb-4 px-6 flex flex-col items-center text-center">
-                            <div class="inline-flex items-center justify-center w-14 h-14 bg-green-100 rounded-full mb-4">
+                        <div class="pt-8 pb-4 px-6 flex flex-col items-center justify-center w-full">
+                            <div class="flex items-center justify-center w-14 h-14 bg-green-100 rounded-full mb-4">
                                 <i data-lucide="check" class="w-8 h-8 text-green-500 stroke-[3px]"></i>
                             </div>
-                            <h2 class="text-xl font-bold text-gray-800 block w-full">Pembayaran Berhasil</h2>
-                            <p class="text-sm text-gray-500 mt-1 block w-full">Transaksi Anda sukses diproses.</p>
+                            <!-- Teks dipaksa center -->
+                            <h2 style="text-align: center; width: 100%;" class="text-xl font-bold text-gray-800 m-0">Pembayaran Berhasil</h2>
+                            <p style="text-align: center; width: 100%;" class="text-sm text-gray-500 mt-1 m-0">Transaksi Anda sukses diproses.</p>
                         </div>
 
                         <!-- Nominal Pembayaran -->
-                        <div class="flex flex-col items-center text-center pb-6 px-6">
-                            <p class="text-sm font-medium text-gray-500 mb-1 block w-full">Total Bayar</p>
-                            <h1 id="receipt-amount" class="text-4xl font-bold text-gray-900 block w-full">Rp0</h1>
+                        <div class="pb-6 px-6 flex flex-col items-center justify-center w-full">
+                            <p style="text-align: center; width: 100%;" class="text-sm font-medium text-gray-500 mb-1">Total Bayar</p>
+                            <h1 style="text-align: center; width: 100%;" id="receipt-amount" class="text-4xl font-bold text-gray-900 m-0">Rp0</h1>
                         </div>
 
-                        <!-- SATU-SATUNYA GARIS PEMISAH (PUTUS-PUTUS) -->
-                        <div class="border-t-2 border-dashed border-gray-200 mx-6"></div>
+                        <!-- SATU-SATUNYA GARIS PEMISAH (Dijamin Putus-putus dengan CSS bawaan) -->
+                        <div class="mx-6" style="border-top: 2px dashed #d1d5db; height: 1px;"></div>
 
                         <!-- Rincian Transaksi -->
                         <div class="p-6 space-y-4">
