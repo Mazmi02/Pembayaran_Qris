@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
@@ -19,7 +20,7 @@
 
     <div class="w-full sm:max-w-sm bg-white sm:rounded-2xl shadow-xl flex flex-col h-screen sm:h-auto sm:min-h-[700px] relative overflow-hidden" id="app-container">
         
-        <!-- ================= LAYAR 1: SCANNER QRIS ================= -->
+        <!-- ================= LAYAR 1: SCANNER ================= -->
         <div id="screen-scan" class="flex flex-col h-full p-6">
             <div class="text-center mb-6 pt-4">
                 <h2 class="text-xl font-bold text-gray-800">Pindai QRIS</h2>
@@ -64,38 +65,32 @@
             <div class="flex-1 overflow-y-auto">
                 <div id="receipt-capture" class="p-4 pt-6 pb-6 bg-gray-100 flex flex-col items-center">
                     
-                    <!-- Kartu Struk Putih -->
-                    <div class="bg-white rounded-2xl shadow-sm overflow-hidden w-full">
+                    <!-- KARTU STRUK -->
+                    <div class="bg-white rounded-2xl shadow-sm overflow-hidden w-full border border-gray-200">
                         
-                        <!-- Header & Nominal (Satu wadah, murni rata tengah, TANPA BORDER BAWAH) -->
-                        <div class="pt-8 pb-6 px-6 block text-center w-full">
+                        <!-- HEADER & NOMINAL (Dipaksa pakai CSS Inline murni agar tidak terpengaruh error Tailwind) -->
+                        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; width: 100%; padding: 32px 24px 24px 24px; border: none !important; outline: none !important;">
                             
-                            <!-- Ikon Ceklis -->
-                            <div class="inline-flex items-center justify-center w-14 h-14 bg-green-100 rounded-full mb-4">
-                                <i data-lucide="check" class="w-8 h-8 text-green-500 stroke-[3px]"></i>
+                            <!-- Ikon -->
+                            <div style="display: flex; align-items: center; justify-content: center; width: 56px; height: 56px; background-color: #dcfce7; border-radius: 50%; margin-bottom: 16px;">
+                                <i data-lucide="check" style="color: #22c55e; stroke-width: 3px; width: 32px; height: 32px;"></i>
                             </div>
                             
-                            <!-- Teks Berhasil -->
-                            <h2 class="text-xl font-bold text-gray-800 text-center block w-full m-0">Pembayaran Berhasil</h2>
-                            <p class="text-sm text-gray-500 mt-1 text-center block w-full m-0">Transaksi Anda sukses diproses.</p>
+                            <!-- Teks -->
+                            <h2 style="font-size: 20px; font-weight: bold; color: #1f2937; margin: 0; text-align: center; width: 100%; border: none !important;">Pembayaran Berhasil</h2>
+                            <p style="font-size: 14px; color: #6b7280; margin: 4px 0 24px 0; text-align: center; width: 100%; border: none !important;">Transaksi Anda sukses diproses.</p>
                             
-                            <div class="mt-6"></div>
-
                             <!-- Nominal -->
-                            <p class="text-sm font-medium text-gray-500 mb-1 text-center block w-full m-0">Total Bayar</p>
-                            <h1 id="receipt-amount" class="text-4xl font-bold text-gray-900 text-center block w-full m-0">Rp0</h1>
+                            <p style="font-size: 14px; font-weight: 500; color: #6b7280; margin: 0 0 4px 0; text-align: center; width: 100%; border: none !important;">Total Bayar</p>
+                            <h1 id="receipt-amount" style="font-size: 36px; font-weight: bold; color: #111827; margin: 0; text-align: center; width: 100%; border: none !important;">Rp0</h1>
                             
                         </div>
 
-                        <!-- SATU-SATUNYA GARIS: Efek sobekan struk putus-putus -->
-                        <div class="relative flex items-center justify-center w-full h-6 overflow-hidden bg-white">
-                            <div class="absolute -left-3 w-6 h-6 bg-gray-100 rounded-full"></div>
-                            <div class="w-full mx-4 border-t-2 border-dashed border-gray-300 h-0"></div>
-                            <div class="absolute -right-3 w-6 h-6 bg-gray-100 rounded-full"></div>
-                        </div>
+                        <!-- SATU-SATUNYA GARIS PUTUS-PUTUS (CSS murni) -->
+                        <div style="width: calc(100% - 48px); margin: 0 auto; border-top: 2px dashed #d1d5db; height: 0;"></div>
 
                         <!-- Rincian Transaksi -->
-                        <div class="p-6 space-y-4 text-left">
+                        <div class="p-6 space-y-4 text-left border-none">
                             <h3 class="text-sm font-bold text-gray-800 mb-2">Rincian Transaksi</h3>
                             
                             <div class="flex justify-between items-start gap-4">
