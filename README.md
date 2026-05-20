@@ -76,7 +76,7 @@
                             </div>
                             
                             <!-- Teks Status Berhasil (Center Mutlak) -->
-                            <h2 style="font-size: 20px; font-weight: 700; color: #1f2937; margin: 0 !important; padding-left: 60px !important; text-align: left !important; width: 100% !important; display: block !important; line-height: 1.4; border: none !important;">Pembayaran Berhasil</h2>
+                            <h2 style="font-size: 20px; font-weight: 700; color: #1f2937; margin: 0 !important; padding-left: 50px !important; text-align: left !important; width: 100% !important; display: block !important; line-height: 1.4; border: none !important;">Pembayaran Berhasil</h2>
                             
                             <!-- Teks Transaksi Sukses Diproses (Center Mutlak) -->
                             <p style="font-size: 14px; font-weight: 400; color: #6b7280; margin: 6px auto 24px auto !important; padding: 0 !important; text-align: center !important; width: 100% !important; display: block !important; line-height: 1.4; border: none !important;">Transaksi Anda sukses diproses.</p>
