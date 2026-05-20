@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
@@ -68,25 +67,25 @@
                     <!-- KARTU STRUK -->
                     <div class="bg-white rounded-2xl shadow-sm overflow-hidden w-full border border-gray-200">
                         
-                        <!-- HEADER & NOMINAL (Dipaksa pakai CSS Inline murni agar tidak terpengaruh error Tailwind) -->
-                        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; width: 100%; padding: 32px 24px 24px 24px; border: none !important; outline: none !important;">
+                        <!-- HEADER & NOMINAL -->
+                        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; padding: 32px 24px 24px 24px; border: none !important; outline: none !important;">
                             
                             <!-- Ikon -->
                             <div style="display: flex; align-items: center; justify-content: center; width: 56px; height: 56px; background-color: #dcfce7; border-radius: 50%; margin-bottom: 16px;">
                                 <i data-lucide="check" style="color: #22c55e; stroke-width: 3px; width: 32px; height: 32px;"></i>
                             </div>
                             
-                            <!-- Teks -->
-                            <h2 style="font-size: 20px; font-weight: bold; color: #1f2937; margin: 0; text-align: center; width: 100%; border: none !important;">Pembayaran Berhasil</h2>
-                            <p style="font-size: 14px; color: #6b7280; margin: 4px 0 24px 0; text-align: center; width: 100%; border: none !important;">Transaksi Anda sukses diproses.</p>
+                            <!-- Teks Status Berhasil (Dipaksa Center Mutlak) -->
+                            <h2 style="font-size: 20px; font-weight: 700; color: #1f2937; margin: 0 auto !important; text-align: center !important; display: block !important; width: 100% !important; border: none !important; padding: 0 !important; line-height: 1.4;">Pembayaran Berhasil</h2>
+                            <p style="font-size: 14px; font-weight: 400; color: #6b7280; margin: 4px auto 24px auto !important; text-align: center !important; display: block !important; width: 100% !important; border: none !important; padding: 0 !important; line-height: 1.4;">Transaksi Anda sukses diproses.</p>
                             
                             <!-- Nominal -->
-                            <p style="font-size: 14px; font-weight: 500; color: #6b7280; margin: 0 0 4px 0; text-align: center; width: 100%; border: none !important;">Total Bayar</p>
-                            <h1 id="receipt-amount" style="font-size: 36px; font-weight: bold; color: #111827; margin: 0; text-align: center; width: 100%; border: none !important;">Rp0</h1>
+                            <p style="font-size: 14px; font-weight: 500; color: #6b7280; margin: 0 auto 4px auto !important; text-align: center !important; display: block !important; width: 100% !important; border: none !important;">Total Bayar</p>
+                            <h1 id="receipt-amount" style="font-size: 36px; font-weight: bold; color: #111827; margin: 0 auto !important; text-align: center !important; display: block !important; width: 100% !important; border: none !important;">Rp0</h1>
                             
                         </div>
 
-                        <!-- SATU-SATUNYA GARIS PUTUS-PUTUS (CSS murni) -->
+                        <!-- SATU-SATUNYA GARIS PUTUS-PUTUS -->
                         <div style="width: calc(100% - 48px); margin: 0 auto; border-top: 2px dashed #d1d5db; height: 0;"></div>
 
                         <!-- Rincian Transaksi -->
