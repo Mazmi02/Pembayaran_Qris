@@ -1,1 +1,299 @@
-# Pembayaran_Qris
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulasi QRIS Pay</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://unpkg.com/html5-qrcode"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght=400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #e5e7eb;
+        }
+        .receipt-bottom {
+            background-image: radial-gradient(circle at 10px 0, transparent 10px, #ffffff 11px);
+            background-size: 20px 20px;
+            background-repeat: repeat-x;
+            height: 20px;
+            width: 100%;
+            position: absolute;
+            bottom: -20px;
+            left: 0;
+            transform: rotate(180deg);
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4">
+
+    <!-- Container Utama Aplikasi -->
+    <div class="w-full max-w-sm bg-white rounded-2xl shadow-xl p-6 relative overflow-hidden min-h-[550px] flex flex-col justify-between" id="app-container">
+        
+        <!-- LAYAR 1: SCANNER QRIS -->
+        <div id="screen-scan" class="flex flex-col flex-grow">
+            <div class="text-center mb-6">
+                <h2 class="text-xl font-bold text-gray-800">Pindai QRIS</h2>
+                <p class="text-sm text-gray-500 mt-1">Arahkan kamera hp ke kode QRIS</p>
+            </div>
+            
+            <div id="reader" class="overflow-hidden rounded-xl bg-gray-100 border border-gray-200 w-full min-h-[250px]"></div>
+            
+            <div class="mt-4">
+                <p class="text-xs text-gray-400 text-center mb-2">Atau masukkan teks data QRIS manual</p>
+                <textarea id="manual-qris" rows="2" class="w-full p-2 text-xs border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="Tempel kode QRIS di sini..."></textarea>
+                <button onclick="processManualQRIS()" class="w-full mt-2 bg-gray-800 text-white text-sm py-2 rounded-lg font-semibold hover:bg-gray-900 transition">Proses Data</button>
+            </div>
+        </div>
+
+        <!-- LAYAR 2: INPUT NOMINAL -->
+        <div id="screen-nominal" class="hidden flex flex-col flex-grow justify-between">
+            <div class="text-center mb-6">
+                <span class="bg-green-100 text-green-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">QRIS Ditemukan</span>
+                <h2 id="target-merchant" class="text-2xl font-bold text-gray-900 mt-3">Nama Tujuan</h2>
+                <p class="text-sm text-gray-500">Sumber Dana: Saldo Utama</p>
+            </div>
+
+            <div class="my-auto">
+                <label class="block text-sm font-medium text-gray-600 text-center mb-2">Nominal Pembayaran</label>
+                <div class="relative mt-1 rounded-md shadow-sm">
+                    <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                        <span class="text-gray-500 text-xl font-bold">Rp</span>
+                    </div>
+                    <input type="number" id="input-amount" class="block w-full rounded-xl border-gray-300 pl-12 pr-4 text-2xl font-bold text-gray-900 focus:border-green-500 focus:ring-green-500 py-3 border focus:outline-none" placeholder="0" min="1">
+                </div>
+            </div>
+
+            <button onclick="executePayment()" class="w-full bg-green-500 text-white font-bold py-4 rounded-xl shadow-md hover:bg-green-600 transition text-lg mt-8">
+                Bayar Sekarang
+            </button>
+        </div>
+
+        <!-- LAYAR 3: STRUK SUKSES -->
+        <div id="screen-receipt" class="hidden flex-col flex-grow bg-[#e5e7eb] -mx-6 -my-6 p-4">
+            <div id="receipt-capture" class="pt-2 pb-8 px-2 bg-[#e5e7eb]">
+                <div class="bg-white rounded-t-2xl shadow-md overflow-hidden pt-8 pb-4 px-6 relative">
+                    
+                    <div class="flex justify-center mb-4">
+                        <div class="bg-green-100 p-3 rounded-full">
+                            <div class="bg-green-500 p-2 rounded-full text-white">
+                                <i data-lucide="check" class="w-8 h-8 stroke-[3px]"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-center mb-6">
+                        <h2 class="text-xl font-bold text-gray-800">Pembayaran Berhasil</h2>
+                        <p class="text-sm text-gray-500 mt-1">Transaksi Anda sukses diproses.</p>
+                    </div>
+
+                    <div class="text-center mb-8">
+                        <p class="text-sm font-medium text-gray-500 mb-1">Total Bayar</p>
+                        <h1 id="receipt-amount" class="text-4xl font-bold text-gray-900">Rp0</h1>
+                    </div>
+
+                    <div class="border-t-2 border-dashed border-gray-200 my-6"></div>
+
+                    <div class="space-y-4">
+                        <h3 class="text-sm font-bold text-gray-800 mb-2">Rincian Transaksi</h3>
+                        
+                        <div class="flex justify-between items-start">
+                            <p class="text-sm text-gray-500">Atas Nama</p>
+                            <p id="receipt-merchant" class="text-sm font-semibold text-gray-900 text-right">Nama Merchant</p>
+                        </div>
+
+                        <div class="flex justify-between items-start">
+                            <p class="text-sm text-gray-500">Ke Rekening</p>
+                            <p class="text-sm font-semibold text-gray-900 text-right">QRIS</p>
+                        </div>
+
+                        <div class="flex justify-between items-start">
+                            <p class="text-sm text-gray-500">Waktu Transaksi</p>
+                            <p id="receipt-time" class="text-sm font-medium text-gray-900 text-right">Waktu Realtime</p>
+                        </div>
+
+                        <div class="flex justify-between items-start">
+                            <p class="text-sm text-gray-500">Nomor Resi / Ref</p>
+                            <div class="flex items-center gap-1">
+                                <p id="receipt-ref" class="text-sm font-medium text-gray-900 text-right tracking-wider">XXXXXX</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex justify-between items-start">
+                            <p class="text-sm text-gray-500">Metode Pembayaran</p>
+                            <p class="text-sm font-medium text-gray-900 text-right">Saldo Utama</p>
+                        </div>
+                    </div>
+
+                    <div class="mt-8 bg-blue-50 rounded-xl p-3 flex gap-3 items-center border border-blue-100">
+                        <i data-lucide="info" class="w-5 h-5 text-blue-500 flex-shrink-0"></i>
+                        <p class="text-xs text-blue-800">Simpan resi ini sebagai bukti pembayaran yang sah.</p>
+                    </div>
+
+                    <div class="receipt-bottom"></div>
+                </div>
+            </div>
+
+            <div class="mt-6 grid grid-cols-2 gap-3 px-2">
+                <button onclick="resetApp()" class="flex items-center justify-center gap-2 bg-white text-gray-700 font-semibold py-3 rounded-xl shadow-sm hover:bg-gray-50 transition border border-gray-200">
+                    <i data-lucide="scan" class="w-5 h-5"></i>
+                    Scan Lagi
+                </button>
+                <button onclick="downloadHD()" id="btn-download" class="flex items-center justify-center gap-2 bg-green-500 text-white font-semibold py-3 rounded-xl shadow-md hover:bg-green-600 transition">
+                    <i data-lucide="download" class="w-5 h-5"></i>
+                    <span>Simpan</span>
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        let html5QrcodeScanner;
+        let finalMerchantName = "Merchant Tidak Dikenal";
+
+        window.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            startScanner();
+        });
+
+        function startScanner() {
+            html5QrcodeScanner = new Html5Qrcode("reader");
+            const config = { fps: 10, qrbox: { width: 250, height: 250 } };
+            
+            html5QrcodeScanner.start(
+                { facingMode: "environment" }, 
+                config, 
+                (decodedText) => {
+                    html5QrcodeScanner.stop().then(() => {
+                        processQRISData(decodedText);
+                    });
+                },
+                (errorMessage) => {}
+            ).catch(err => {
+                console.error("Kamera gagal diakses.", err);
+                document.getElementById('reader').innerHTML = `<p class="p-4 text-xs text-red-500 text-center mt-10">Kamera tidak diizinkan atau gagal dimuat. Gunakan kolom teks di bawah.</p>`;
+            });
+        }
+
+        function extractMerchantName(qrisText) {
+            try {
+                let i = 0;
+                while (i < qrisText.length) {
+                    let id = qrisText.substring(i, i + 2);
+                    let len = parseInt(qrisText.substring(i + 2, i + 4));
+                    let val = qrisText.substring(i + 4, i + 4 + len);
+                    
+                    if (id === '59') { 
+                        return val.trim();
+                    }
+                    if (isNaN(len) || len <= 0) break; 
+                    i += 4 + len;
+                }
+            } catch (e) {
+                console.error("Gagal membaca standar QRIS");
+            }
+            return null;
+        }
+
+        function processManualQRIS() {
+            const textData = document.getElementById('manual-qris').value;
+            if(textData.trim() !== "") {
+                if(html5QrcodeScanner && html5QrcodeScanner.isScanning) {
+                    html5QrcodeScanner.stop().then(() => {
+                        processQRISData(textData);
+                    });
+                } else {
+                    processQRISData(textData);
+                }
+            }
+        }
+
+        function processQRISData(rawText) {
+            let parsedName = extractMerchantName(rawText);
+            finalMerchantName = parsedName ? parsedName : "Tujuan Tidak Diketahui";
+            
+            document.getElementById('screen-scan').classList.add('hidden');
+            document.getElementById('screen-nominal').classList.remove('hidden');
+            document.getElementById('target-merchant').innerText = finalMerchantName;
+        }
+
+        function executePayment() {
+            const amountInput = document.getElementById('input-amount').value;
+            if(!amountInput || amountInput <= 0) {
+                alert("Masukkan nominal dengan benar!");
+                return;
+            }
+
+            const formattedAmount = new Intl.NumberFormat('id-ID', {
+                style: 'currency',
+                currency: 'IDR',
+                minimumFractionDigits: 0
+            }).format(amountInput).replace("IDR", "Rp");
+
+            const sekarang = new Date();
+            const bulanIndo = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+            const tanggalStr = `${sekarang.getDate()} ${bulanIndo[sekarang.getMonth()]} ${sekarang.getFullYear()}`;
+            const jamStr = `${String(sekarang.getHours()).padStart(2, '0')}:${String(sekarang.getMinutes()).padStart(2, '0')}`;
+            const waktuRealtime = `${tanggalStr}, ${jamStr} WIB`;
+
+            const karakter = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            let nomorRefAcak = 'IDM';
+            for (let i = 0; i < 12; i++) {
+                nomorRefAcak += karakter.charAt(Math.floor(Math.random() * karakter.length));
+            }
+
+            document.getElementById('receipt-amount').innerText = formattedAmount;
+            document.getElementById('receipt-merchant').innerText = finalMerchantName;
+            document.getElementById('receipt-time').innerText = waktuRealtime;
+            document.getElementById('receipt-ref').innerText = nomorRefAcak;
+
+            document.getElementById('screen-nominal').classList.add('hidden');
+            document.getElementById('screen-receipt').classList.remove('hidden');
+            
+            document.getElementById('app-container').classList.remove('bg-white');
+            document.getElementById('app-container').classList.add('bg-[#e5e7eb]', 'p-0', 'shadow-none');
+            
+            lucide.createIcons();
+        }
+
+        function downloadHD() {
+            const element = document.getElementById('receipt-capture');
+            const btn = document.getElementById('btn-download');
+            const btnSpan = btn.querySelector('span');
+            const originalText = btnSpan.innerText;
+            
+            btnSpan.innerText = 'Menyimpan...';
+
+            html2canvas(element, {
+                scale: 3, 
+                backgroundColor: '#e5e7eb', 
+                useCORS: true 
+            }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = `Struk_Simulasi_${finalMerchantName.replace(/\s+/g, '_')}.png`;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+                btnSpan.innerText = originalText;
+            }).catch(err => {
+                console.error("Gagal simpan struk", err);
+                btnSpan.innerText = originalText;
+            });
+        }
+
+        function resetApp() {
+            document.getElementById('screen-receipt').classList.add('hidden');
+            document.getElementById('screen-nominal').classList.add('hidden');
+            document.getElementById('screen-scan').classList.remove('hidden');
+            document.getElementById('input-amount').value = '';
+            document.getElementById('manual-qris').value = '';
+            
+            document.getElementById('app-container').className = "w-full max-w-sm bg-white rounded-2xl shadow-xl p-6 relative overflow-hidden min-h-[550px] flex flex-col justify-between";
+            
+            startScanner();
+        }
+    </script>
+</body>
+</html>
