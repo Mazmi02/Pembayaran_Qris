@@ -17,7 +17,6 @@
 </head>
 <body class="flex items-center justify-center min-h-screen sm:p-4 bg-gray-100">
 
-    <!-- Container Utama -->
     <div class="w-full sm:max-w-sm bg-white sm:rounded-2xl shadow-xl flex flex-col h-screen sm:h-auto sm:min-h-[700px] relative overflow-hidden" id="app-container">
         
         <!-- ================= LAYAR 1: SCANNER QRIS ================= -->
@@ -62,34 +61,41 @@
         <!-- ================= LAYAR 3: STRUK SUKSES ================= -->
         <div id="screen-receipt" class="hidden flex-col h-full bg-gray-100 relative">
             
-            <!-- Area Capture Struk -->
             <div class="flex-1 overflow-y-auto">
                 <div id="receipt-capture" class="p-4 pt-6 pb-6 bg-gray-100 flex flex-col items-center">
                     
                     <!-- Kartu Struk Putih -->
-                    <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden w-full">
+                    <div class="bg-white rounded-2xl shadow-sm overflow-hidden w-full">
                         
-                        <!-- Bagian Atas: Semuanya Terkunci di Tengah -->
-                        <div class="pt-8 pb-4 px-6 flex flex-col items-center justify-center w-full">
-                            <div class="flex items-center justify-center w-14 h-14 bg-green-100 rounded-full mb-4">
+                        <!-- Header & Nominal (Satu wadah, murni rata tengah, TANPA BORDER BAWAH) -->
+                        <div class="pt-8 pb-6 px-6 block text-center w-full">
+                            
+                            <!-- Ikon Ceklis -->
+                            <div class="inline-flex items-center justify-center w-14 h-14 bg-green-100 rounded-full mb-4">
                                 <i data-lucide="check" class="w-8 h-8 text-green-500 stroke-[3px]"></i>
                             </div>
-                            <!-- Teks dipaksa center -->
-                            <h2 style="text-align: center; width: 100%;" class="text-xl font-bold text-gray-800 m-0">Pembayaran Berhasil</h2>
-                            <p style="text-align: center; width: 100%;" class="text-sm text-gray-500 mt-1 m-0">Transaksi Anda sukses diproses.</p>
+                            
+                            <!-- Teks Berhasil -->
+                            <h2 class="text-xl font-bold text-gray-800 text-center block w-full m-0">Pembayaran Berhasil</h2>
+                            <p class="text-sm text-gray-500 mt-1 text-center block w-full m-0">Transaksi Anda sukses diproses.</p>
+                            
+                            <div class="mt-6"></div>
+
+                            <!-- Nominal -->
+                            <p class="text-sm font-medium text-gray-500 mb-1 text-center block w-full m-0">Total Bayar</p>
+                            <h1 id="receipt-amount" class="text-4xl font-bold text-gray-900 text-center block w-full m-0">Rp0</h1>
+                            
                         </div>
 
-                        <!-- Nominal Pembayaran -->
-                        <div class="pb-6 px-6 flex flex-col items-center justify-center w-full">
-                            <p style="text-align: center; width: 100%;" class="text-sm font-medium text-gray-500 mb-1">Total Bayar</p>
-                            <h1 style="text-align: center; width: 100%;" id="receipt-amount" class="text-4xl font-bold text-gray-900 m-0">Rp0</h1>
+                        <!-- SATU-SATUNYA GARIS: Efek sobekan struk putus-putus -->
+                        <div class="relative flex items-center justify-center w-full h-6 overflow-hidden bg-white">
+                            <div class="absolute -left-3 w-6 h-6 bg-gray-100 rounded-full"></div>
+                            <div class="w-full mx-4 border-t-2 border-dashed border-gray-300 h-0"></div>
+                            <div class="absolute -right-3 w-6 h-6 bg-gray-100 rounded-full"></div>
                         </div>
-
-                        <!-- SATU-SATUNYA GARIS PEMISAH (Dijamin Putus-putus dengan CSS bawaan) -->
-                        <div class="mx-6" style="border-top: 2px dashed #d1d5db; height: 1px;"></div>
 
                         <!-- Rincian Transaksi -->
-                        <div class="p-6 space-y-4">
+                        <div class="p-6 space-y-4 text-left">
                             <h3 class="text-sm font-bold text-gray-800 mb-2">Rincian Transaksi</h3>
                             
                             <div class="flex justify-between items-start gap-4">
@@ -127,7 +133,7 @@
                 </div>
             </div>
 
-            <!-- Tombol Aksi (Sticky di bawah) -->
+            <!-- Tombol Aksi -->
             <div class="p-4 bg-white border-t border-gray-200 grid grid-cols-2 gap-3 mt-auto">
                 <button onclick="resetApp()" class="flex items-center justify-center gap-2 bg-white text-gray-700 font-semibold py-3.5 rounded-xl shadow-sm hover:bg-gray-50 transition border border-gray-200">
                     <i data-lucide="scan" class="w-5 h-5"></i>
@@ -142,7 +148,6 @@
 
     </div>
 
-    <!-- SCRIPT LOGIKA APLIKASI -->
     <script>
         let html5QrcodeScanner;
         let finalMerchantName = "Merchant Tidak Dikenal";
@@ -243,7 +248,6 @@
             document.getElementById('receipt-time').innerText = waktuRealtime;
             document.getElementById('receipt-ref').innerText = nomorRefAcak;
 
-            // Transisi Layar
             document.getElementById('screen-nominal').classList.add('hidden');
             document.getElementById('screen-receipt').classList.remove('hidden');
             document.getElementById('screen-receipt').classList.add('flex');
