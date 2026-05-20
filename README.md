@@ -9,11 +9,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://unpkg.com/html5-qrcode"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght=400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
         body {
             font-family: 'Inter', sans-serif;
             background-color: #e5e7eb;
         }
+        /* Efek potongan kertas struk bawah */
         .receipt-bottom {
             background-image: radial-gradient(circle at 10px 0, transparent 10px, #ffffff 11px);
             background-size: 20px 20px;
@@ -27,30 +28,30 @@
         }
     </style>
 </head>
-<body class="flex items-center justify-center min-h-screen p-4">
+<body class="flex items-center justify-center min-h-screen sm:p-4 bg-[#e5e7eb]">
 
-    <!-- Container Utama Aplikasi -->
-    <div class="w-full max-w-sm bg-white rounded-2xl shadow-xl p-6 relative overflow-hidden min-h-[550px] flex flex-col justify-between" id="app-container">
+    <!-- Container Utama: Dibuat h-screen w-full agar di HP langsung full screen -->
+    <div class="w-full sm:max-w-sm bg-white sm:rounded-2xl shadow-xl flex flex-col h-screen sm:h-auto sm:min-h-[700px] relative overflow-x-hidden" id="app-container">
         
-        <!-- LAYAR 1: SCANNER QRIS -->
-        <div id="screen-scan" class="flex flex-col flex-grow">
-            <div class="text-center mb-6">
+        <!-- ================= LAYAR 1: SCANNER QRIS ================= -->
+        <div id="screen-scan" class="flex flex-col h-full p-6">
+            <div class="text-center mb-6 pt-4">
                 <h2 class="text-xl font-bold text-gray-800">Pindai QRIS</h2>
                 <p class="text-sm text-gray-500 mt-1">Arahkan kamera hp ke kode QRIS</p>
             </div>
             
             <div id="reader" class="overflow-hidden rounded-xl bg-gray-100 border border-gray-200 w-full min-h-[250px]"></div>
             
-            <div class="mt-4">
+            <div class="mt-auto pt-8">
                 <p class="text-xs text-gray-400 text-center mb-2">Atau masukkan teks data QRIS manual</p>
                 <textarea id="manual-qris" rows="2" class="w-full p-2 text-xs border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="Tempel kode QRIS di sini..."></textarea>
                 <button onclick="processManualQRIS()" class="w-full mt-2 bg-gray-800 text-white text-sm py-2 rounded-lg font-semibold hover:bg-gray-900 transition">Proses Data</button>
             </div>
         </div>
 
-        <!-- LAYAR 2: INPUT NOMINAL -->
-        <div id="screen-nominal" class="hidden flex flex-col flex-grow justify-between">
-            <div class="text-center mb-6">
+        <!-- ================= LAYAR 2: INPUT NOMINAL ================= -->
+        <div id="screen-nominal" class="hidden flex flex-col h-full justify-between p-6">
+            <div class="text-center pt-4 mb-6">
                 <span class="bg-green-100 text-green-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">QRIS Ditemukan</span>
                 <h2 id="target-merchant" class="text-2xl font-bold text-gray-900 mt-3">Nama Tujuan</h2>
                 <p class="text-sm text-gray-500">Sumber Dana: Saldo Utama</p>
@@ -59,10 +60,10 @@
             <div class="my-auto">
                 <label class="block text-sm font-medium text-gray-600 text-center mb-2">Nominal Pembayaran</label>
                 <div class="relative mt-1 rounded-md shadow-sm">
-                    <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                    <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4">
                         <span class="text-gray-500 text-xl font-bold">Rp</span>
                     </div>
-                    <input type="number" id="input-amount" class="block w-full rounded-xl border-gray-300 pl-12 pr-4 text-2xl font-bold text-gray-900 focus:border-green-500 focus:ring-green-500 py-3 border focus:outline-none" placeholder="0" min="1">
+                    <input type="number" id="input-amount" class="block w-full rounded-xl border-gray-300 pl-14 pr-4 text-3xl font-bold text-gray-900 focus:border-green-500 focus:ring-green-500 py-4 border focus:outline-none" placeholder="0" min="1">
                 </div>
             </div>
 
@@ -71,10 +72,11 @@
             </button>
         </div>
 
-        <!-- LAYAR 3: STRUK SUKSES -->
-        <div id="screen-receipt" class="hidden flex-col flex-grow bg-[#e5e7eb] -mx-6 -my-6 p-4">
-            <div id="receipt-capture" class="pt-2 pb-8 px-2 bg-[#e5e7eb]">
-                <div class="bg-white rounded-t-2xl shadow-md overflow-hidden pt-8 pb-4 px-6 relative">
+        <!-- ================= LAYAR 3: STRUK SUKSES ================= -->
+        <div id="screen-receipt" class="hidden flex-col h-full bg-[#e5e7eb]">
+            <!-- Area Capture Lebar Maksimal -->
+            <div id="receipt-capture" class="pt-8 pb-12 px-4 bg-[#e5e7eb]">
+                <div class="bg-white rounded-t-3xl shadow-sm overflow-hidden pt-8 pb-6 px-6 relative w-full">
                     
                     <div class="flex justify-center mb-4">
                         <div class="bg-green-100 p-3 rounded-full">
@@ -96,52 +98,51 @@
 
                     <div class="border-t-2 border-dashed border-gray-200 my-6"></div>
 
-                    <div class="space-y-4">
+                    <div class="space-y-5">
                         <h3 class="text-sm font-bold text-gray-800 mb-2">Rincian Transaksi</h3>
                         
-                        <div class="flex justify-between items-start">
-                            <p class="text-sm text-gray-500">Atas Nama</p>
-                            <p id="receipt-merchant" class="text-sm font-semibold text-gray-900 text-right">Nama Merchant</p>
+                        <div class="flex justify-between items-start gap-4">
+                            <p class="text-sm text-gray-500 flex-shrink-0">Atas Nama</p>
+                            <p id="receipt-merchant" class="text-sm font-semibold text-gray-900 text-right break-words">Nama Merchant</p>
                         </div>
 
-                        <div class="flex justify-between items-start">
-                            <p class="text-sm text-gray-500">Ke Rekening</p>
+                        <div class="flex justify-between items-start gap-4">
+                            <p class="text-sm text-gray-500 flex-shrink-0">Ke Rekening</p>
                             <p class="text-sm font-semibold text-gray-900 text-right">QRIS</p>
                         </div>
 
-                        <div class="flex justify-between items-start">
-                            <p class="text-sm text-gray-500">Waktu Transaksi</p>
+                        <div class="flex justify-between items-start gap-4">
+                            <p class="text-sm text-gray-500 flex-shrink-0">Waktu Transaksi</p>
                             <p id="receipt-time" class="text-sm font-medium text-gray-900 text-right">Waktu Realtime</p>
                         </div>
 
-                        <div class="flex justify-between items-start">
-                            <p class="text-sm text-gray-500">Nomor Resi / Ref</p>
-                            <div class="flex items-center gap-1">
-                                <p id="receipt-ref" class="text-sm font-medium text-gray-900 text-right tracking-wider">XXXXXX</p>
-                            </div>
+                        <div class="flex justify-between items-start gap-4">
+                            <p class="text-sm text-gray-500 flex-shrink-0">Nomor Resi / Ref</p>
+                            <p id="receipt-ref" class="text-sm font-medium text-gray-900 text-right tracking-wider">XXXXXX</p>
                         </div>
                         
-                        <div class="flex justify-between items-start">
-                            <p class="text-sm text-gray-500">Metode Pembayaran</p>
+                        <div class="flex justify-between items-start gap-4">
+                            <p class="text-sm text-gray-500 flex-shrink-0">Metode Pembayaran</p>
                             <p class="text-sm font-medium text-gray-900 text-right">Saldo Utama</p>
                         </div>
                     </div>
 
-                    <div class="mt-8 bg-blue-50 rounded-xl p-3 flex gap-3 items-center border border-blue-100">
-                        <i data-lucide="info" class="w-5 h-5 text-blue-500 flex-shrink-0"></i>
-                        <p class="text-xs text-blue-800">Simpan resi ini sebagai bukti pembayaran yang sah.</p>
+                    <div class="mt-8 bg-blue-50 rounded-xl p-3 flex gap-3 items-start border border-blue-100">
+                        <i data-lucide="info" class="w-5 h-5 text-blue-500 flex-shrink-0 mt-0.5"></i>
+                        <p class="text-xs text-blue-800 leading-relaxed">Simpan resi ini sebagai bukti pembayaran yang sah.</p>
                     </div>
 
                     <div class="receipt-bottom"></div>
                 </div>
             </div>
 
-            <div class="mt-6 grid grid-cols-2 gap-3 px-2">
-                <button onclick="resetApp()" class="flex items-center justify-center gap-2 bg-white text-gray-700 font-semibold py-3 rounded-xl shadow-sm hover:bg-gray-50 transition border border-gray-200">
+            <!-- Tombol Aksi (Sticky di bawah) -->
+            <div class="mt-auto px-4 pb-6 grid grid-cols-2 gap-3 bg-[#e5e7eb]">
+                <button onclick="resetApp()" class="flex items-center justify-center gap-2 bg-white text-gray-700 font-semibold py-3.5 rounded-xl shadow-sm hover:bg-gray-50 transition border border-gray-200">
                     <i data-lucide="scan" class="w-5 h-5"></i>
                     Scan Lagi
                 </button>
-                <button onclick="downloadHD()" id="btn-download" class="flex items-center justify-center gap-2 bg-green-500 text-white font-semibold py-3 rounded-xl shadow-md hover:bg-green-600 transition">
+                <button onclick="downloadHD()" id="btn-download" class="flex items-center justify-center gap-2 bg-green-500 text-white font-semibold py-3.5 rounded-xl shadow-md hover:bg-green-600 transition">
                     <i data-lucide="download" class="w-5 h-5"></i>
                     <span>Simpan</span>
                 </button>
@@ -150,6 +151,7 @@
 
     </div>
 
+    <!-- SCRIPT LOGIKA APLIKASI -->
     <script>
         let html5QrcodeScanner;
         let finalMerchantName = "Merchant Tidak Dikenal";
@@ -250,11 +252,13 @@
             document.getElementById('receipt-time').innerText = waktuRealtime;
             document.getElementById('receipt-ref').innerText = nomorRefAcak;
 
+            // Transisi Layar
             document.getElementById('screen-nominal').classList.add('hidden');
             document.getElementById('screen-receipt').classList.remove('hidden');
             
+            // Ubah background container utama agar senada dengan struk
             document.getElementById('app-container').classList.remove('bg-white');
-            document.getElementById('app-container').classList.add('bg-[#e5e7eb]', 'p-0', 'shadow-none');
+            document.getElementById('app-container').classList.add('bg-[#e5e7eb]');
             
             lucide.createIcons();
         }
@@ -290,7 +294,9 @@
             document.getElementById('input-amount').value = '';
             document.getElementById('manual-qris').value = '';
             
-            document.getElementById('app-container').className = "w-full max-w-sm bg-white rounded-2xl shadow-xl p-6 relative overflow-hidden min-h-[550px] flex flex-col justify-between";
+            // Kembalikan background container utama ke putih
+            document.getElementById('app-container').classList.add('bg-white');
+            document.getElementById('app-container').classList.remove('bg-[#e5e7eb]');
             
             startScanner();
         }
