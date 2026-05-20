@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
@@ -11,7 +12,7 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f3f4f6; /* gray-100 */
+            background-color: #f3f4f6;
         }
     </style>
 </head>
@@ -64,58 +65,62 @@
             
             <!-- Area Capture Struk -->
             <div class="flex-1 overflow-y-auto">
-                <div id="receipt-capture" class="p-4 pt-6 pb-6 bg-gray-100">
+                <div id="receipt-capture" class="p-4 pt-6 pb-6 bg-gray-100 flex flex-col items-center">
                     
-                    <!-- Kartu Struk Putih (Rapi dan Lurus) -->
-                    <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+                    <!-- Kartu Struk Putih -->
+                    <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden w-full">
                         
-                        <div class="pt-8 pb-4 px-6 text-center">
+                        <!-- Bagian Atas: Semuanya Terkunci di Tengah -->
+                        <div class="pt-8 pb-4 px-6 flex flex-col items-center text-center">
                             <div class="inline-flex items-center justify-center w-14 h-14 bg-green-100 rounded-full mb-4">
                                 <i data-lucide="check" class="w-8 h-8 text-green-500 stroke-[3px]"></i>
                             </div>
-                            <h2 class="text-xl font-bold text-gray-800">Pembayaran Berhasil</h2>
-                            <p class="text-sm text-gray-500 mt-1">Transaksi Anda sukses diproses.</p>
+                            <h2 class="text-xl font-bold text-gray-800 block w-full">Pembayaran Berhasil</h2>
+                            <p class="text-sm text-gray-500 mt-1 block w-full">Transaksi Anda sukses diproses.</p>
                         </div>
 
-                        <div class="text-center pb-6">
-                            <p class="text-sm font-medium text-gray-500 mb-1">Total Bayar</p>
-                            <h1 id="receipt-amount" class="text-4xl font-bold text-gray-900">Rp0</h1>
+                        <!-- Nominal Pembayaran -->
+                        <div class="flex flex-col items-center text-center pb-6 px-6">
+                            <p class="text-sm font-medium text-gray-500 mb-1 block w-full">Total Bayar</p>
+                            <h1 id="receipt-amount" class="text-4xl font-bold text-gray-900 block w-full">Rp0</h1>
                         </div>
 
+                        <!-- SATU-SATUNYA GARIS PEMISAH (PUTUS-PUTUS) -->
                         <div class="border-t-2 border-dashed border-gray-200 mx-6"></div>
 
+                        <!-- Rincian Transaksi -->
                         <div class="p-6 space-y-4">
                             <h3 class="text-sm font-bold text-gray-800 mb-2">Rincian Transaksi</h3>
                             
                             <div class="flex justify-between items-start gap-4">
-                                <p class="text-sm text-gray-500">Atas Nama</p>
-                                <p id="receipt-merchant" class="text-sm font-semibold text-gray-900 text-right">Nama Merchant</p>
+                                <p class="text-sm text-gray-500 flex-shrink-0">Atas Nama</p>
+                                <p id="receipt-merchant" class="text-sm font-semibold text-gray-900 text-right break-words">Nama Merchant</p>
                             </div>
 
                             <div class="flex justify-between items-start gap-4">
-                                <p class="text-sm text-gray-500">Ke Rekening</p>
+                                <p class="text-sm text-gray-500 flex-shrink-0">Ke Rekening</p>
                                 <p class="text-sm font-semibold text-gray-900 text-right">QRIS</p>
                             </div>
 
                             <div class="flex justify-between items-start gap-4">
-                                <p class="text-sm text-gray-500">Waktu Transaksi</p>
+                                <p class="text-sm text-gray-500 flex-shrink-0">Waktu Transaksi</p>
                                 <p id="receipt-time" class="text-sm font-medium text-gray-900 text-right">Waktu Realtime</p>
                             </div>
 
                             <div class="flex justify-between items-start gap-4">
-                                <p class="text-sm text-gray-500">Nomor Resi</p>
+                                <p class="text-sm text-gray-500 flex-shrink-0">Nomor Resi</p>
                                 <p id="receipt-ref" class="text-sm font-medium text-gray-900 text-right tracking-wider">XXXXXX</p>
                             </div>
                             
                             <div class="flex justify-between items-start gap-4">
-                                <p class="text-sm text-gray-500">Metode</p>
+                                <p class="text-sm text-gray-500 flex-shrink-0">Metode</p>
                                 <p class="text-sm font-medium text-gray-900 text-right">Saldo Utama</p>
                             </div>
                         </div>
                     </div>
                     
                     <!-- Info Box -->
-                    <div class="mt-4 bg-blue-50 rounded-xl p-3 flex gap-3 items-start border border-blue-100">
+                    <div class="mt-4 bg-blue-50 rounded-xl p-3 flex gap-3 items-start border border-blue-100 w-full">
                         <i data-lucide="info" class="w-5 h-5 text-blue-500 flex-shrink-0 mt-0.5"></i>
                         <p class="text-xs text-blue-800 leading-relaxed">Simpan resi ini sebagai bukti pembayaran yang sah.</p>
                     </div>
@@ -256,7 +261,7 @@
 
             html2canvas(element, {
                 scale: 3, 
-                backgroundColor: '#f3f4f6', // Menggunakan warna abu-abu muda
+                backgroundColor: '#f3f4f6', 
                 useCORS: true 
             }).then(canvas => {
                 const link = document.createElement('a');
