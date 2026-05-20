@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
@@ -67,21 +68,25 @@
                     <!-- KARTU STRUK -->
                     <div class="bg-white rounded-2xl shadow-sm overflow-hidden w-full border border-gray-200">
                         
-                        <!-- HEADER & NOMINAL -->
-                        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; padding: 32px 24px 24px 24px; border: none !important; outline: none !important;">
+                        <!-- HEADER & NOMINAL (Menggunakan Blok Murni Tanpa Flexbox Agar Center 100%) -->
+                        <div style="display: block !important; text-align: center !important; width: 100% !important; padding: 32px 24px 24px 24px; box-sizing: border-box;">
                             
-                            <!-- Ikon -->
-                            <div style="display: flex; align-items: center; justify-content: center; width: 56px; height: 56px; background-color: #dcfce7; border-radius: 50%; margin-bottom: 16px;">
+                            <!-- Ikon Wadah Bulat -->
+                            <div style="display: inline-flex; align-items: center; justify-content: center; width: 56px; height: 56px; background-color: #dcfce7; border-radius: 50%; margin: 0 auto 16px auto;">
                                 <i data-lucide="check" style="color: #22c55e; stroke-width: 3px; width: 32px; height: 32px;"></i>
                             </div>
                             
-                            <!-- Teks Status Berhasil (Dipaksa Center Mutlak) -->
-                            <h2 style="font-size: 20px; font-weight: 700; color: #1f2937; margin: 0 auto !important; text-align: center !important; display: block !important; width: 100% !important; border: none !important; padding: 0 !important; line-height: 1.4;">Pembayaran Berhasil</h2>
-                            <p style="font-size: 14px; font-weight: 400; color: #6b7280; margin: 4px auto 24px auto !important; text-align: center !important; display: block !important; width: 100% !important; border: none !important; padding: 0 !important; line-height: 1.4;">Transaksi Anda sukses diproses.</p>
+                            <!-- Teks Status Berhasil (Center Mutlak) -->
+                            <h2 style="font-size: 20px; font-weight: 700; color: #1f2937; margin: 0 auto 0 auto !important; padding: 0 !important; text-align: center !important; width: 100% !important; display: block !important; line-height: 1.4; border: none !important;">Pembayaran Berhasil</h2>
                             
-                            <!-- Nominal -->
-                            <p style="font-size: 14px; font-weight: 500; color: #6b7280; margin: 0 auto 4px auto !important; text-align: center !important; display: block !important; width: 100% !important; border: none !important;">Total Bayar</p>
-                            <h1 id="receipt-amount" style="font-size: 36px; font-weight: bold; color: #111827; margin: 0 auto !important; text-align: center !important; display: block !important; width: 100% !important; border: none !important;">Rp0</h1>
+                            <!-- Teks Transaksi Sukses Diproses (Center Mutlak) -->
+                            <p style="font-size: 14px; font-weight: 400; color: #6b7280; margin: 6px auto 24px auto !important; padding: 0 !important; text-align: center !important; width: 100% !important; display: block !important; line-height: 1.4; border: none !important;">Transaksi Anda sukses diproses.</p>
+                            
+                            <!-- Label Total Bayar -->
+                            <p style="font-size: 14px; font-weight: 500; color: #6b7280; margin: 0 auto 4px auto !important; padding: 0 !important; text-align: center !important; width: 100% !important; display: block !important; border: none !important;">Total Bayar</p>
+                            
+                            <!-- Nilai Nominal -->
+                            <h1 id="receipt-amount" style="font-size: 36px; font-weight: 800; color: #111827; margin: 0 auto !important; padding: 0 !important; text-align: center !important; width: 100% !important; display: block !important; border: none !important;">Rp0</h1>
                             
                         </div>
 
